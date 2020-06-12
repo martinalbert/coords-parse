@@ -1,0 +1,48 @@
+{
+  "name": "coords-parse",
+  "version": "1.0.0",
+  "description": "nodejs RestAPI to get requested coordinates from image with EXIF metadata",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martinalbert/coords-parse.git"
+  },
+  "keywords": [
+    "nodejs",
+    "rest",
+    "api",
+    "image",
+    "exif"
+  ],
+  "author": "Martin Albert",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martinalbert/coords-parse/issues"
+  },
+  "homepage": "https://github.com/martinalbert/coords-parse#readme",
+  "dependencies": {
+    "exif-js": "^2.3.0",
+    "express": "^4.17.1",
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "lodash": "^4.17.15",
+    "morgan": "^1.10.0",
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/node": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
+    "nodemon": "^2.0.4"
+  },
+  "scripts": {
+    "server": "nodemon ./src/server.js",
+    "babel-node": "babel-node --presets=@babel/env",
+    "start": "nodemon --exec npm run babel-node -- ./src/server.js",
+    "build": "babel src -d dist",
+    "test": "jest",
+    "testdev": "jest --watch"
+  }
+}
