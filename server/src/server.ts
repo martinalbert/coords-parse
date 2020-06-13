@@ -1,13 +1,16 @@
 // require dotenv to access enviroment ( process.env ) variables
-require('dotenv/config')
+import 'dotenv/config'
 
-const http = require('http')
-const app = require('./app')
+import http from 'http'
+import app from './app'
 
 const PORT = process.env.PORT || 3000
 const server = http.createServer(app)
 
-server.listen(PORT, (err) => {
-    if (err) return console.error(err)
+server.listen(PORT, () => {
     console.log('server started on port: ' + PORT)
+})
+
+server.on('error', (err: Error) => {
+    if (err) return console.error(err)
 })
