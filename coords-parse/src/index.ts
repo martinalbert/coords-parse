@@ -1,8 +1,29 @@
-import fs from 'fs'
+import _, { LoDashWrapper } from 'lodash'
+import BaseImageParser from './BaseImageParser'
 
-const path: string = './image.jpeg'
+class CoordsParser extends BaseImageParser {
+    
+    private coords: LoDashWrapper<ICoords>
 
-const fileStream = fs.readFile(path, (err, data) => {
-    if (err)
-        console.error(err.message)
-})
+    constructor (imageBuffer: Buffer, format?: string) {
+        super(imageBuffer)
+        this.coords = this.getCoords()
+    }
+
+    // get coordinates from tags
+    private getCoords() {
+        return _.filter(this.tags, (val, key) => key === 'gps')
+    }
+
+    get coordinates() {
+        return this.coords
+    }
+}
+
+interface ICoords {
+    Latitude: number,
+    Longitude: number,
+    Altitude: number
+}
+
+export default CoordsParser
