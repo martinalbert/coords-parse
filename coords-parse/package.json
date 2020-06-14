@@ -20,15 +20,19 @@
     "url": "https://github.com/martinalbert/coords-parse/issues"
   },
   "homepage": "https://github.com/martinalbert/coords-parse#readme",
-  "dependencies": {},
+  "dependencies": {
+    "exifreader": "^3.12.0",
+    "lodash": "^4.17.15"
+  },
   "devDependencies": {
+    "@types/lodash": "^4.14.155",
     "@types/node": "^14.0.13",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   },
   "scripts": {
     "start": "node ./dist/index.js",
-    "dev": "node ./src/index.js",
+    "dev": "node ./src/index.ts",
     "build": "tsc",
     "test": "jest",
     "testdev": "jest --watch"
