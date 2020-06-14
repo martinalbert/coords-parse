@@ -8,7 +8,6 @@ const app: Application = express()
 
 // middlewares
 app.use(morgan('dev'))
-// SETTING FOLDER IMGS TO PUBLIC
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
