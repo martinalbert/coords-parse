@@ -22,12 +22,11 @@ export class CreateRecordController extends BaseController {
     protected async executeImpl (req: Request, res: Response): Promise<void | any> {
         try {
             // handle request
-            // console.log('req.file:', req.file)
             const imageBuffer: Buffer = req.file.buffer
             const coordsParser = new Parser(imageBuffer)
 
             console.log('after parse', coordsParser.coordinates)
-            res.status(200).send('ok')
+            res.status(200).send(coordsParser.coordinates)
 
             // save record
 
