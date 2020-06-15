@@ -33,7 +33,7 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "dev": "node ./src/index.ts",
-    "build": "tsc",
+    "build": "tsc -p .",
     "test": "jest",
     "testdev": "jest --watch"
   }
