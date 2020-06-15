@@ -4,7 +4,7 @@ const exifErrors = ExifReader.errors
 export default abstract class BaseImageParser {
 
     private imageBuffer: Buffer
-    protected tags: any
+    protected tags: ITags
 
     constructor(imageBuffer: Buffer) {
 
@@ -13,9 +13,9 @@ export default abstract class BaseImageParser {
     }
     
     // get tags from file buffer
-    private getTags () {
+    private getTags(): ITags {
     
-        let tags: any = {}
+        let tags: ITags
         try {
 
             tags = ExifReader.load(this.imageBuffer, {expanded: true})
@@ -23,6 +23,7 @@ export default abstract class BaseImageParser {
                 delete tags.exif['MakerNote']
             }
 
+            return tags
         } catch (error) {
     
             if (error instanceof exifErrors.MetadataMissingError) {
@@ -31,7 +32,7 @@ export default abstract class BaseImageParser {
             console.error(error.message)
             
         }
-        return tags
+        return {}
     }
 
     private listAllTags () {
@@ -49,4 +50,8 @@ export default abstract class BaseImageParser {
             }
         }
     }
+}
+
+interface ITags {
+    [key: string]: any
 }
