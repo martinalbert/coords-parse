@@ -12,7 +12,7 @@ class CoordsParser extends BaseImageParser {
 
     // get coordinates from tags
     private getCoords() {
-        return _.filter(this.tags, (val, key) => key === 'gps')
+        return _.filter(this.tags, (val, key) => key === 'gps')[0]
     }
 
     get coordinates() {
@@ -21,8 +21,8 @@ class CoordsParser extends BaseImageParser {
 }
 
 interface ICoords {
-    Latitude: number,
-    Longitude: number,
+    Latitude: number
+    Longitude: number
     Altitude: number
 }
 
