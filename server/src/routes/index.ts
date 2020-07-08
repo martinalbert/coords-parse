@@ -1,11 +1,31 @@
 import express, { Router, Request, Response } from 'express'
 import multer from 'multer'
-import { CreateRecordController, GetRecordController } from '../controllers'
+import { CreateImageController, GetImageController } from '../controllers'
 
 const storage = multer.memoryStorage()
 const upload = multer({
-    storage: storage
+    storage: storage,
 })
+
+const router: Router = express.Router()
+const sampleData = {
+    id: 0,
+    imageName: 'test',
+    lat: 49.002,
+    long: 23.333,
+    alt: 555,
+}
+
+const getImageController = new GetImageController(sampleData)
+const createImageController = new CreateImageController(sampleData)
+
+router.get('/image', (req: Request, res: Response) => getImageController.exec(req, res))
+router.post('/image', upload.single('image'), (req: Request, res: Response) =>
+    createImageController.exec(req, res)
+)
+
+export default router
+
 // need to implement fileFilter
 // check file extension for compatibility with ExifReader
 // File type	Exif	IPTC	XMP	    ICC	    Thumbnail
@@ -14,23 +34,3 @@ const upload = multer({
 // PNG	        no	    no	    yes	    no	    no
 // HEIC/HEIF	yes	    no	    no	    yes	    no
 // WebP	        yes	    no	    yes	    yes	    yes
-
-const router: Router = express.Router()
-const sampleData = {
-    id: 0,
-    imageName: 'test',
-    lat: 49.002,
-    long: 23.333,
-    alt: 555
-}
-
-const getRecordController = new GetRecordController(sampleData)
-const getImage = (req: Request, res: Response) => getRecordController.exec(req, res)
-
-const createRecordController = new CreateRecordController(sampleData)
-const sendImage = (req: Request, res: Response) => createRecordController.exec(req, res)
-
-router.get('/image', getImage)
-router.post('/image', upload.single('image'), sendImage)
-
-export default router
