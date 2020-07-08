@@ -1,6 +1,7 @@
 import express, { Router, Request, Response } from 'express'
 import multer from 'multer'
-import { CreateImageController, GetImageController } from '../controllers'
+import checkAuth from '../util/checkAuth'
+import { register, login, getAllUsers } from '../useCases/UserUseCases'
 
 const storage = multer.memoryStorage()
 const upload = multer({
@@ -8,21 +9,18 @@ const upload = multer({
 })
 
 const router: Router = express.Router()
-const sampleData = {
-    id: 0,
-    imageName: 'test',
-    lat: 49.002,
-    long: 23.333,
-    alt: 555,
-}
 
-const getImageController = new GetImageController(sampleData)
-const createImageController = new CreateImageController(sampleData)
-
-router.get('/image', (req: Request, res: Response) => getImageController.exec(req, res))
-router.post('/image', upload.single('image'), (req: Request, res: Response) =>
-    createImageController.exec(req, res)
+// router.get('/image', (req: Request, res: Response) => getImageController.exec(req, res))
+// router.post('/image', upload.single('image'), (req: Request, res: Response) =>
+//     createImageController.exec(req, res)
+// )
+router.get(
+    '/users',
+    (req, res, next) => checkAuth,
+    async (req, res, next) => await getAllUsers.exec
 )
+router.post('/user/register', async (req, res, next) => await register.exec)
+router.post('/user/login', async (req, res, next) => await login.exec)
 
 export default router
 
