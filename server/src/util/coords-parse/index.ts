@@ -1,7 +1,7 @@
 import _, { LoDashWrapper } from 'lodash'
-import BaseImageParser from './BaseImageParser'
+import ImageParser from './ImageParser'
 
-class CoordsParser extends BaseImageParser {
+class CoordsParser extends ImageParser {
     private coords: LoDashWrapper<ICoords>
 
     constructor(imageBuffer: Buffer, format?: string) {
@@ -17,12 +17,6 @@ class CoordsParser extends BaseImageParser {
     get coordinates() {
         return this.coords
     }
-}
-
-interface ICoords {
-    Latitude: number
-    Longitude: number
-    Altitude: number
 }
 
 export default CoordsParser
