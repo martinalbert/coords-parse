@@ -1,49 +1,51 @@
 {
-  "name": "coords-parse",
-  "version": "1.0.0",
-  "description": "nodejs RestAPI to get requested coordinates from image with EXIF metadata",
-  "main": "server.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/martinalbert/coords-parse.git"
-  },
-  "keywords": [
-    "nodejs",
-    "rest",
-    "api",
-    "image",
-    "exif"
-  ],
-  "author": "Martin Albert",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/martinalbert/coords-parse/issues"
-  },
-  "homepage": "https://github.com/martinalbert/coords-parse#readme",
-  "dependencies": {
-    "bluebird": "^3.7.2",
-    "body-parser": "^1.19.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "lodash": "^4.17.15",
-    "morgan": "^1.10.0",
-    "multer": "^1.4.2",
-    "redis": "^3.0.2"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.6",
-    "@types/morgan": "^1.9.1",
-    "@types/multer": "^1.4.3",
-    "@types/node": "^14.0.13",
-    "nodemon": "^2.0.4",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.5"
-  },
-  "scripts": {
-    "start": "nodemon ./dist/server.js",
-    "dev": "nodemon ./src/server.ts",
-    "build": "tsc -p .",
-    "test": "jest",
-    "testdev": "jest --watch"
-  }
+    "name": "coords-parse",
+    "version": "1.0.0",
+    "description": "nodejs RestAPI to get requested coordinates from image with EXIF metadata",
+    "main": "server.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/martinalbert/coords-parse.git"
+    },
+    "keywords": [
+        "nodejs",
+        "rest",
+        "api",
+        "image",
+        "exif"
+    ],
+    "author": "Martin Albert",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/martinalbert/coords-parse/issues"
+    },
+    "homepage": "https://github.com/martinalbert/coords-parse#readme",
+    "dependencies": {
+        "bluebird": "^3.7.2",
+        "body-parser": "^1.19.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "lodash": "^4.17.15",
+        "exifreader": "^3.12.0",
+        "morgan": "^1.10.0",
+        "multer": "^1.4.2",
+        "redis": "^3.0.2"
+    },
+    "devDependencies": {
+        "@types/lodash": "^4.14.155",
+        "@types/express": "^4.17.6",
+        "@types/morgan": "^1.9.1",
+        "@types/multer": "^1.4.3",
+        "@types/node": "^14.0.13",
+        "nodemon": "^2.0.4",
+        "ts-node": "^8.10.2",
+        "typescript": "^3.9.5"
+    },
+    "scripts": {
+        "start": "nodemon ./dist/server.js",
+        "dev": "nodemon ./src/server.ts",
+        "build": "tsc -p .",
+        "test": "jest",
+        "testdev": "jest --watch"
+    }
 }
