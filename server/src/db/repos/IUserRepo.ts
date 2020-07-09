@@ -23,7 +23,7 @@ export default abstract class IUserRepo {
      * Function that logs in user which is authenticated
      * @abstract @async @function login
      * @param {string} email - User's email
-     * @param {string} pw - User's password (AccessToken)
+     * @param {string} pw - User's password
      * @returns {Promise<Object>} object with email and id of User
      */
     abstract async login(email: string, pw: string): Promise<object>

@@ -1,4 +1,5 @@
 import IUserRepo from '../IUserRepo'
+import { getLastID } from './postgresClient'
 import User from '../../../entities/User'
 import UserModel from './models/User'
 
@@ -23,6 +24,9 @@ export default class UserRepo extends IUserRepo {
      * @returns {Promise<User>} created User
      */
     async register(user: User): Promise<User | any> {
+        const { userCount } = await getLastID()
+        user.id = userCount + 1
+
         const newUser = await UserModel.create(user.toObject())
 
         if (newUser) return newUser
@@ -34,11 +38,11 @@ export default class UserRepo extends IUserRepo {
      * Function that logs in user which is authenticated
      * @async @function login
      * @param {string} email - User's email
-     * @param {string} pw - User's password (AccessToken)
+     * @param {string} pw - User's password
      * @returns {Promise<Object>} object with email and id of User
      */
     async login(email: string, pw: string): Promise<object> {
-        const found = await UserModel.findOne({ where: { email: email, accessToken: pw } })
+        const found = await UserModel.findOne({ where: { email: email, password: pw } })
 
         if (found) return found
 

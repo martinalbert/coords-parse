@@ -2,7 +2,7 @@ import _, { LoDashWrapper } from 'lodash'
 import ImageParser from './ImageParser'
 
 class CoordsParser extends ImageParser {
-    private coords: LoDashWrapper<ICoords>
+    private coords: ICoords
 
     constructor(imageBuffer: Buffer, format?: string) {
         super(imageBuffer)

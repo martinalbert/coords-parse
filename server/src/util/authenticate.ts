@@ -1,12 +1,11 @@
 import bcrypt from 'bcryptjs'
-import errors from 'restify-errors'
-import config from '../config'
-import User from '../db/repos/postgres/models/User'
+import UserModel from '../db/repos/postgres/models/User'
+import User from '../entities/User'
 
 export default (email: string, password: string): Promise<User> => {
     return new Promise(async (resolve, reject) => {
         try {
-            const user = await User.findOne({
+            const user = await UserModel.findOne({
                 where: {
                     email: email,
                 },

@@ -44,7 +44,7 @@ const seed = async (): Promise<void> => {
 
         // seed images to monitor
         if (imageCount < images.length)
-            for (const endpoint of images) await imageRepo.create(endpoint)
+            for (const image of images) await imageRepo.create(image)
     } catch (error) {
         throw Error(error)
     }
