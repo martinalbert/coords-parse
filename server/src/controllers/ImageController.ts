@@ -164,19 +164,30 @@ export class CreateImageController extends BaseController {
             return this.unauthorized(next, error)
         }
 
-        // handle request
+        let coordinates: ICoords, name: string, imageName: string | undefined
+        // parse the Image
         try {
             // get custom name from request body
-            let imageName = undefined
+            imageName = undefined
             if (req.body.imageName) imageName = req.body.imageName
+
+            // check image compatibility
+            if (!Parser.checkCompatibility(req.file.mimetype))
+                throw new Error(
+                    'Image is not compatible. Only formats JPEG/TIFF/HEIC/HEIF are valid.'
+                )
 
             // parse coordinates from image
             const coordsParser = new Parser(req.file.buffer)
-            const coordinates = coordsParser.coordinates
-            const name = req.file.originalname
+            coordinates = coordsParser.coordinates
+            name = req.file.originalname
+        } catch (err) {
+            return this.invalidContent(next, err)
+        }
 
-            // create new Image
-            let image: Image
+        let image: Image
+        // create new Image
+        try {
             if (imageName) image = new Image(0, name, coordinates, user, imageName)
             else image = new Image(0, name, coordinates, user)
 
