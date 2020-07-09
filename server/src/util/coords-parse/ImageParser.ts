@@ -1,16 +1,41 @@
 import ExifReader from 'exifreader'
 const exifErrors = ExifReader.errors
 
+/**
+ * Abstract Class\
+ * Parses the multiple tags from Image
+ *
+ * @abstract @class ImageParser
+ * @private @param {Buffer} imageBuffer - buffer of provided image
+ * @protected @param {ITags} tags - parsed tags from Image
+ * @private @function getTags - function that parses all tags from image
+ * @private @function listAllTags - function that logs all tags
+ */
 export default abstract class ImageParser {
+    /**
+     * @private buffer of provided image
+     */
     private imageBuffer: Buffer
+    /**
+     * @protected parsed tags from Image
+     */
     protected tags: ITags
 
+    /**
+     * @constructor of ImageParser
+     * @param  {Buffer} imageBuffer - provided image buffer
+     * @returns {ImageParser} instance of this class
+     */
     constructor(imageBuffer: Buffer) {
         this.imageBuffer = imageBuffer
         this.tags = this.getTags()
     }
 
-    // get tags from file buffer
+    /**
+     * Function that parses all tags from Image.
+     * @private @function getTags
+     * @returns {ITags} all tags extracted from Image
+     */
     private getTags(): ITags {
         let tags: ITags
         try {
@@ -29,6 +54,10 @@ export default abstract class ImageParser {
         return {}
     }
 
+    /**
+     * Function that logs all tags.
+     * @private @function listAllTags
+     */
     private listAllTags() {
         for (const group in this.tags) {
             for (const name in this.tags[group]) {
@@ -46,6 +75,13 @@ export default abstract class ImageParser {
     }
 }
 
+/**
+ * Interface\
+ * Interface for tags extracted from Image.\
+ * Provides indexing by string.
+ *
+ * @interface
+ */
 interface ITags {
     [key: string]: any
 }
