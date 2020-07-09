@@ -19,7 +19,7 @@ import auth from '../util/authenticate'
  */
 export class UserRegisterController extends BaseController {
     /**
-     * @private Abstraction of database repository
+     * @private Database repository of Users
      */
     private repo: IUserRepo
 
@@ -45,21 +45,32 @@ export class UserRegisterController extends BaseController {
         res: Response,
         next: NextFunction
     ): Promise<void | any> {
+        if (!req.is('application/json')) return this.invalidContent(next)
+
+        console.log('registering user')
+        // handle request
         try {
-            if (!req.is('application/json')) return this.invalidContent(next)
-
-            // handle request
-            console.log('registering user')
+            // get user information from Request body
             const { userName, email, pw } = req.body
+            if (pw.length < 10)
+                return this.invalidContent(next, 'Provide password longer than 10 characters.')
 
+            // create new User
             const user = new User(0, userName, email, pw)
 
+            // encrypt password and create new record
             bcrypt.genSalt(10, (err, salt) => {
+                if (err) throw new Error(err.message)
+
                 bcrypt.hash(user.password, salt, async (err, hash) => {
+                    if (err) throw new Error(err.message)
+
+                    // replace password with hash
                     user.password = hash
+
+                    // save record
                     const newUser = await this.repo.register(user)
-                    this.created<User>(res, newUser)
-                    next()
+                    this.created<string>(res, 'User have been created.')
                 })
             })
         } catch (err) {
@@ -80,7 +91,7 @@ export class UserRegisterController extends BaseController {
  */
 export class UserLoginController extends BaseController {
     /**
-     * @private Abstraction of database repository
+     * @private Database repository of Users
      */
     private repo: IUserRepo
 
@@ -106,24 +117,32 @@ export class UserLoginController extends BaseController {
         res: Response,
         next: NextFunction
     ): Promise<void | any> {
+        if (!req.is('application/json')) return this.invalidContent(next)
+
+        console.log('loging in user')
+        let user: User
+        // Authenticate
         try {
-            if (!req.is('application/json')) return this.invalidContent(next)
-
-            // handle request
-            console.log('loging in user')
             const { email, pw } = req.body
+            user = await auth(email, pw)
+        } catch (err) {
+            return this.unauthorized(next, err)
+        }
 
-            // authenticate
-            await auth(email, pw)
+        // handle request
+        try {
+            // Create payload for JWT
+            const payload = {
+                id: user.id,
+                email: user.email,
+            }
 
             // Create JWT
-            const user = await this.repo.login(email, pw)
-            const token = jwt.sign(user, config.JWT_SECRET, {
+            const token = jwt.sign(payload, config.JWT_SECRET, {
                 expiresIn: '15m',
             })
 
             this.ok<string>(res, token)
-            next()
         } catch (err) {
             return this.fail(next, err)
         }
@@ -142,7 +161,7 @@ export class UserLoginController extends BaseController {
  */
 export class GetAllUsersController extends BaseController {
     /**
-     * @private Abstraction of database repository
+     * @private Database repository of Users
      */
     private repo: IUserRepo
 
@@ -168,13 +187,11 @@ export class GetAllUsersController extends BaseController {
         res: Response,
         next: NextFunction
     ): Promise<void | any> {
+        console.log('getting all users')
+        // handle request
         try {
-            // handle request
-            console.log('getting all users')
             const users = await this.repo.getAll()
-
             this.ok<User[]>(res, users)
-            next()
         } catch (err) {
             return this.fail(next, err)
         }
