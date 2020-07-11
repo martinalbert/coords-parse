@@ -1,5 +1,5 @@
 import Sequelize, { Model } from 'sequelize'
-import { sequelize } from '../postgresClient'
+import sequelize from '../../../sequelize'
 import UserModel from './User'
 
 /**

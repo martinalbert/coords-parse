@@ -1,5 +1,5 @@
 import IImageRepo from '../IImageRepo'
-import { getLastID } from './postgresClient'
+import { getLastID } from './actions'
 import ImageModel from './models/Image'
 import Image from '../../../entities/Image'
 

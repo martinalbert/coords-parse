@@ -1,7 +1,7 @@
 import IUserRepo from '../IUserRepo'
-import { getLastID } from './postgresClient'
-import User from '../../../entities/User'
+import { getLastID } from './actions'
 import UserModel from './models/User'
+import User from '../../../entities/User'
 
 /**
  * Repository Class\
