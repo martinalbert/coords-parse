@@ -9,4 +9,5 @@ export default {
     POSTGRES_SOCKET: process.env.POSTGRES_SOCKET || '/tmp/.s.PGSQL.5432',
     POSTGRES_USER: process.env.POSTGRES_USER || 'martinalbert',
     POSTGRES_DB: process.env.POSTGRES_DB || 'martinalbert',
+    POSTGRES_PW: process.env.POSTGRES_PW || 'postgresPassword',
 }
