@@ -26,6 +26,13 @@ export const dropAllTables = () => {
     sequelize.sync({ force: true })
 }
 
+/**
+ * Helper Function\
+ * Function that gets the last ID of users and images.
+ *
+ * @async @function getLastID
+ * @return {Object} object with user last ID and endpoint last ID
+ */
 export const getLastID = async () => {
     const imageCount = await sequelize.query(
         'SELECT setval(\'images_id_seq\', (SELECT MAX(id) FROM "images"));',
