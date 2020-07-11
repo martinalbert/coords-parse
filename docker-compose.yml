@@ -29,7 +29,5 @@ services:
             - POSTGRES_USER=martinalbert
             - POSTGRES_PW=postgresPassword
             - JWT_SECRET=x23f_
-        links:
-            - postgres
         depends_on:
             - postgres
