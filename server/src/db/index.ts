@@ -1,4 +1,5 @@
 import loader from './loader'
+import sequelize from './sequelize'
 
 /**
  * Repository Class\
@@ -35,14 +36,4 @@ export const ImageRepo = loader.loadRepo('image')
  *
  * @instance of Sequelize
  */
-export const { postgres } = loader.loadClient()
-/**
- * Function that authenticate connection to database and synchronize tables.
- * @function connect
- */
-export const { connect } = loader.loadClient()
-/**
- * Function that drops all tables from database
- * @function dropAllTables
- */
-export const { dropAllTables } = loader.loadClient()
+export const postgres = sequelize
