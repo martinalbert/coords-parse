@@ -1,4 +1,6 @@
+import bcrypt from 'bcryptjs'
 import data from '../../sampleData'
+import { getLastID } from './actions'
 import ImageRepo from './image_postgres_repo'
 import UserRepo from './user_postgres_repo'
 
@@ -9,38 +11,32 @@ const users = data.users
 const images = data.images
 
 /**
- * Helper Function\
- * Function that counts records of users and images.
- *
- * @async @function numberOfRecords
- * @return {Object} object with user count and endpoint count
- */
-const numberOfRecords = async () => {
-    const users = await userRepo.getAll()
-    const userCount = users.length
-    let imageCount = 0
-    for (const user of users) {
-        const images = await imageRepo.getAll(user.id)
-        imageCount += images.length
-    }
-    return {
-        userCount,
-        imageCount,
-    }
-}
-
-/**
  * Function that seed base two Users Applifting and Batman\
  * and base few images that can be monitored.
  * @async @function seed
  * @returns {Promise<void>} promise
  */
 const seed = async (): Promise<void> => {
-    const { userCount, imageCount } = await numberOfRecords()
-
     try {
+        const { imageCount, userCount } = await getLastID()
+
         // seed users
-        if (userCount < users.length) for (const user of users) await userRepo.register(user)
+        if (userCount < users.length)
+            for (const user of users) {
+                bcrypt.genSalt(10, (err, salt) => {
+                    if (err) throw new Error(err.message)
+
+                    bcrypt.hash(user.password, salt, async (err, hash) => {
+                        if (err) throw new Error(err.message)
+
+                        // replace password with hash
+                        user.password = hash
+
+                        // save record
+                        await userRepo.register(user)
+                    })
+                })
+            }
 
         // seed images to monitor
         if (imageCount < images.length)
