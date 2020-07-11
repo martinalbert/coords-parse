@@ -17,8 +17,7 @@ services:
         restart: always
         build: ./server
         volumes:
-            - ./server:/usr/src/app/server
-            - /usr/src/app/server/node_modules/
+            - ./server/dist:/usr/src/app/server
         ports:
             - 3000:3000
         environment:

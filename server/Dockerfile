@@ -10,7 +10,7 @@ RUN npm install
 
 RUN npm build
 
-COPY . /usr/src/app/server/dist
+COPY . /usr/src/app/server
 
 EXPOSE 3000
 
