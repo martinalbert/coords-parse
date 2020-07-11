@@ -1,7 +1,7 @@
 import http from 'http'
 import config from './config'
 import app from './app'
-import { connect } from './db'
+import connect from './db/connect'
 import seed from './db/repos/postgres/seed'
 
 const PORT = config.PORT || 3000
@@ -12,9 +12,10 @@ server.listen(PORT, () => {
 
     // connect to DB (postgres)
     connect()
-
-    // seed sample data
-    seed()
+        .then(() => {
+            // seed sample data
+            return seed()
+        })
         .then(() => console.log('data have been seeded'))
         .catch(err => {
             throw Error(err)
