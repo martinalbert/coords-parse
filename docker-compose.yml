@@ -18,6 +18,7 @@ services:
         build: ./server
         volumes:
             - ./server:/usr/src/app/server
+            - /usr/src/app/server/node_modules/
         ports:
             - 3000:3000
         environment:
