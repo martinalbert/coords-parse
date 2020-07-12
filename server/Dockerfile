@@ -1,16 +1,14 @@
 FROM node:14
 
-RUN mkdir -p /usr/src/app/server
+WORKDIR /usr/src/app/
 
-WORKDIR /usr/src/app/server
-
-COPY package*.json /usr/src/app/server/
+COPY package.json .
 
 RUN npm install
 
-RUN npm build
+ADD . /usr/src/app
 
-COPY ./dist /usr/src/app/server
+RUN npm build
 
 EXPOSE 3000
 
