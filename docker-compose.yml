@@ -17,7 +17,7 @@ services:
         restart: always
         build: ./server
         volumes:
-            - ./server/dist:/usr/src/app/server
+            - ./server:/usr/src/app/server
         ports:
             - 3000:3000
         environment:
