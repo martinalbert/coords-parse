@@ -1,23 +1,29 @@
-version: '3'
+version: '2.3'
 
 services:
     postgres:
         container_name: postgresdatabase
         image: postgres:latest
-        restart: always
         environment:
             POSTGRES_DB: 'database'
             POSTGRES_USER: 'martinalbert'
             POSTGRES_PASSWORD: 'postgresPassword'
         ports:
             - '5432:5432'
+        healthcheck:
+            test: ['CMD', 'psql', '-h', 'localhost', '-U', 'postgres']
+            timeout: 10s
+            retries: 10
 
     server:
+        depends_on:
+            postgres:
+                condition: service_healthy
         container_name: coords-parse-rest-api
         restart: always
         build: ./server
         volumes:
-            - ./server:/usr/src/app/server
+            - /usr/src/app/node_modules/
         ports:
             - 3000:3000
         environment:
@@ -28,5 +34,3 @@ services:
             - POSTGRES_USER=martinalbert
             - POSTGRES_PW=postgresPassword
             - JWT_SECRET=x23f_
-        depends_on:
-            - postgres
