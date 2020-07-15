@@ -24,8 +24,6 @@ export default class UserRepo extends IUserRepo {
      * @returns {Promise<User>} created User
      */
     async register(user: User): Promise<User> {
-        console.log('user ID: ', user.id)
-
         const newUser = await UserModel.create(user.toObject())
 
         // reset postgres sequence

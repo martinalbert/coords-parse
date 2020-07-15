@@ -4,9 +4,6 @@ import { getLastUserID, getLastImageID } from './actions'
 import ImageRepo from './image_postgres_repo'
 import UserRepo from './user_postgres_repo'
 
-const userRepo = new UserRepo()
-const imageRepo = new ImageRepo()
-
 /**
  * Array of sample Users
  * @constant {User[]} users
@@ -19,8 +16,30 @@ const users = data.users
 const images = data.images
 
 /**
+ * Function that encrypts the password of specified User\
+ * and creates that User
+ * @async @function registerUser
+ * @param {User} user - user to be registered
+ */
+const registerUser = async (user: IUser) => {
+    const userRepo = new UserRepo()
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) throw new Error(err.message)
+
+        bcrypt.hash(user.password, salt, async (err, hash) => {
+            if (err) throw new Error(err.message)
+
+            // replace password with hash
+            user.password = hash
+
+            // save record
+            await userRepo.register(user)
+        })
+    })
+}
+
+/**
  * Function that seed base two Users Martin and Batman\
- * and encrypts their passwords.
  * @async @function seedUsers
  * @returns {Promise<boolean>} promise
  */
@@ -29,19 +48,7 @@ const seedUsers = async (): Promise<boolean> => {
 
     if (userCount < users.length) {
         for (const user of users) {
-            bcrypt.genSalt(10, (err, salt) => {
-                if (err) throw new Error(err.message)
-
-                bcrypt.hash(user.password, salt, async (err, hash) => {
-                    if (err) throw new Error(err.message)
-
-                    // replace password with hash
-                    user.password = hash
-
-                    // save record
-                    await userRepo.register(user)
-                })
-            })
+            await registerUser(user)
         }
         return true
     } else {
@@ -55,6 +62,7 @@ const seedUsers = async (): Promise<boolean> => {
  * @returns {Promise<boolean>} promise
  */
 const seedImages = async (): Promise<boolean> => {
+    const imageRepo = new ImageRepo()
     const imageCount = await getLastImageID()
 
     if (imageCount < images.length) {
