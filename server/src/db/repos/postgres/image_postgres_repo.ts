@@ -1,5 +1,5 @@
 import IImageRepo from '../IImageRepo'
-import { getLastID } from './actions'
+import { resetSequence } from './actions'
 import ImageModel from './models/Image'
 import Image from '../../../entities/Image'
 
@@ -55,10 +55,10 @@ export default class ImageRepo extends IImageRepo {
      * @returns {Promise<Image>} created Image
      */
     async create(image: Image): Promise<Image> {
-        const { imageCount } = await getLastID()
-        image.id = imageCount + 1
-
         const newImage = await ImageModel.create(image.toObject())
+
+        // reset postgres sequence
+        await resetSequence('images')
 
         if (newImage) return newImage
 
@@ -86,6 +86,10 @@ export default class ImageRepo extends IImageRepo {
                 },
                 restartIdentity: true,
             })
+
+            // reset postgres sequence
+            await resetSequence('images')
+
             return deleted
         }
 

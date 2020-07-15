@@ -1,5 +1,5 @@
 import IUserRepo from '../IUserRepo'
-import { getLastID } from './actions'
+import { resetSequence } from './actions'
 import UserModel from './models/User'
 import User from '../../../entities/User'
 
@@ -23,11 +23,13 @@ export default class UserRepo extends IUserRepo {
      * @param {User} user - new User
      * @returns {Promise<User>} created User
      */
-    async register(user: User): Promise<User | any> {
-        const { userCount } = await getLastID()
-        user.id = userCount + 1
+    async register(user: User): Promise<User> {
+        console.log('user ID: ', user.id)
 
         const newUser = await UserModel.create(user.toObject())
+
+        // reset postgres sequence
+        await resetSequence('users')
 
         if (newUser) return newUser
 
@@ -86,7 +88,12 @@ export default class UserRepo extends IUserRepo {
         const result = await UserModel.findByPk(id)
 
         if (result) {
-            return await UserModel.destroy({ where: { id: id } })
+            const deleted = await UserModel.destroy({ where: { id: id } })
+
+            // reset postgres sequence
+            await resetSequence('images')
+
+            return deleted
         }
 
         throw new Error(`There is no User with id: ${id}`)
