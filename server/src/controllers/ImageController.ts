@@ -173,7 +173,8 @@ export class CreateImageController extends BaseController {
 
             // check image compatibility
             if (!Parser.checkCompatibility(req.file.mimetype))
-                throw Error(
+                return this.invalidContent(
+                    next,
                     'Image is not compatible. Only formats JPEG/TIFF/HEIC/HEIF are valid.'
                 )
 
