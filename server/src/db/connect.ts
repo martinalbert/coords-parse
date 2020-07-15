@@ -8,10 +8,12 @@ const connect = async () => {
     try {
         // synchronize database
         await sequelize.sync()
+        // authenticate database connection
         await sequelize.authenticate()
         console.log('Connection has been established successfully.')
     } catch (err) {
-        console.error('Unable to connect to the database:', err)
+        console.log('Unable to connect to the database.')
+        throw Error(err)
     }
 }
 
