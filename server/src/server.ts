@@ -16,7 +16,6 @@ server.listen(PORT, () => {
             // seed sample data
             return seed()
         })
-        .then(() => console.log('data have been seeded'))
         .catch(err => {
             throw Error(err)
         })
